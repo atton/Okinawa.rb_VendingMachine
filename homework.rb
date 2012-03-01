@@ -1,8 +1,6 @@
 #!/usr/local/bin/ruby
 # -*- coding: utf-8 -*-
 
-require 'pp'
-
 class Drink
   def initialize name,price
     @name = name
@@ -25,8 +23,10 @@ class Vending_machine
     lemon_tea = Drink.new("レモンティー",110)
     cocoa = Drink.new("ココア",120)
     coffie = Drink.new("コーヒー",100)
+    cha = Drink.new("お茶",140)
+    cola = Drink.new("コーラ",150)
 
-    @drinks = [lemon_tea,cocoa,coffie]
+    @drinks = [lemon_tea,cocoa,coffie,cha,cola]
     @money = 0
   end
 

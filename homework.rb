@@ -22,17 +22,21 @@ end
 class Vending_machine
 
   def initialize
-    lemon_tea = Drink.new("lemon_tea",110)
-    cocoa = Drink.new("cocoa",120)
-    coffie = Drink.new("coffie",100)
+    lemon_tea = Drink.new("レモンティー",110)
+    cocoa = Drink.new("ココア",120)
+    coffie = Drink.new("コーヒー",100)
 
     @drinks = [lemon_tea,cocoa,coffie]
     @money = 0
   end
 
   def add_money money
-    @money += money.to_i
-    puts "#{money} 円入れました"
+    if money <= 0
+      puts "ちゃんとしたお金を入れてください"
+    else
+      @money += money
+      puts "#{money} 円入れました"
+    end
   end
 
   def buy_drink
@@ -62,20 +66,19 @@ class Vending_machine
   def buy_calc drink
     if drink == nil
       puts "ちゃんと飲み物を選んでください"
-      return
-    end
-    
-    puts "#{drink.get_name} を買います"
-    if drink.get_price > @money
-      puts "お金が足りません"
-      puts "買いませんでした"
     else
-      puts "#{drink.get_name} を買いました"
-      @money -= drink.get_price
-      show_money
+      puts "#{drink.get_name} を買います"
+      if drink.get_price > @money
+        puts "お金が足りません"
+        puts "買いませんでした"
+      else
+        puts "#{drink.get_name} を買いました"
+        @money -= drink.get_price
+        show_money
+      end
     end
-  end
 
+  end
 end
 
 machine = Vending_machine.new
@@ -86,7 +89,7 @@ end
 
 add_money = Proc.new do |machine|
   puts "いくら入れますか？"
-  machine.add_money gets.chomp
+  machine.add_money gets.chomp.to_i
 end
 
 show_money = Proc.new do |machine|
@@ -110,11 +113,11 @@ while true
   puts "3 : 飲み物を買う"
   puts "4 : 終わる"
 
-  command = gets.chomp.to_i
+  num = gets.chomp.to_i
   puts ""
 
-  if commands.length  > command
-    commands[command].call machine
+  if commands.length  > num
+    commands[num].call machine
   else
     puts "存在するものを指定してください"
   end

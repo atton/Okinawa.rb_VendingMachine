@@ -35,12 +35,12 @@ class Vending_machine
     puts "#{money} 円入れました"
   end
 
-  def buy_drinks
+  def buy_drink
     puts "買いたい飲み物を選んでください"
     @drinks.each_with_index do |item,index|
       puts "[#{index}] : #{item.get_name} : #{item.get_price} "
     end
-    num = gets.chomp 
+    num = gets.chomp.to_i
     buy_calc @drinks[num]
   end
 
@@ -60,6 +60,11 @@ class Vending_machine
   private
 
   def buy_calc drink
+    if drink == nil
+      puts "ちゃんと飲み物を選んでください"
+      return
+    end
+    
     puts "#{drink.get_name} を買います"
     if drink.get_price > @money
       puts "お金が足りません"
@@ -88,9 +93,13 @@ show_money = Proc.new do |machine|
   machine.show_money
 end
 
+buy_drink = Proc.new do |machine|
+  machine.buy_drink
+end
+
 finish = Proc.new {exit}
 
-commands = [show_drinks,add_money,show_money,finish]
+commands = [show_drinks,add_money,show_money,buy_drink,finish]
 
 while true 
   puts ""
@@ -98,7 +107,8 @@ while true
   puts "0 : 商品を見る"
   puts "1 : お金を入れる"
   puts "2 : お金を確認する"
-  puts "3 : 終わる"
+  puts "3 : 飲み物を買う"
+  puts "4 : 終わる"
 
   command = gets.chomp.to_i
   puts ""

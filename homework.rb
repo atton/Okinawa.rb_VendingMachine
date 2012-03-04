@@ -20,14 +20,18 @@ end
 class Vending_machine
 
   def initialize
-    lemon_tea = Drink.new("レモンティー",110)
-    cocoa = Drink.new("ココア",120)
-    coffie = Drink.new("コーヒー",100)
-    cha = Drink.new("お茶",140)
-    cola = Drink.new("コーラ",150)
-
-    @drinks = [lemon_tea,cocoa,coffie,cha,cola]
+    init_dirnk
     @money = 0
+  end
+
+  def init_dirnk
+    @drinks = []
+    
+    @drinks.push Drink.new("レモンティー",110)
+    @drinks.push Drink.new("ココア",120)
+    @drinks.push Drink.new("コーヒー",100)
+    @drinks.push Drink.new("お茶",140)
+    @drinks.push Drink.new("コーラ",150)
   end
 
   def add_money
@@ -85,9 +89,6 @@ end
 
 class Command
 
-  @message
-  @proc
-
   def initialize mes,p
     @message = mes
     @proc = p
@@ -112,7 +113,7 @@ commands.push Command.new("飲み物を買う",Proc.new { |machine| machine.sele
 commands.push Command.new("終わる",Proc.new { exit })
 
 while true 
-  
+
   puts ""
   puts "何をしますか？"
   commands.each_with_index do |command,index|

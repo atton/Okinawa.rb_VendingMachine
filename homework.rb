@@ -30,7 +30,9 @@ class Vending_machine
     @money = 0
   end
 
-  def add_money money
+  def add_money
+    puts "いくら入れますか？"
+    money = gets.chomp.to_i
     if money <= 0
       puts "ちゃんとしたお金を入れてください"
     else
@@ -81,43 +83,48 @@ class Vending_machine
   end
 end
 
+class Command
+
+  @message
+  @proc
+
+  def initialize mes,p
+    @message = mes
+    @proc = p
+  end
+
+  def get_message
+    @message
+  end
+
+  def get_proc
+    @proc
+  end
+end
+require 'pp'
+
 machine = Vending_machine.new
+commands = []
 
-show_drinks = Proc.new do |machine|
-  machine.show_drinks
-end
-
-add_money = Proc.new do |machine|
-  puts "いくら入れますか？"
-  machine.add_money gets.chomp.to_i
-end
-
-show_money = Proc.new do |machine|
-  machine.show_money
-end
-
-buy_drink = Proc.new do |machine|
-  machine.buy_drink
-end
-
-finish = Proc.new {exit}
-
-commands = [show_drinks,add_money,show_money,buy_drink,finish]
+commands.push Command.new("商品を見る" , Proc.new { |machine| machine.show_drinks })
+commands.push Command.new("お金を入れる" , Proc.new { |machine| machine.add_money })
+commands.push Command.new("お金を確認する",Proc.new { |machine| machine.show_money })
+commands.push Command.new("飲み物を買う",Proc.new { |machine| machine.buy_drink })
+commands.push Command.new("終わる",Proc.new { exit })
 
 while true 
+  
   puts ""
   puts "何をしますか？"
-  puts "0 : 商品を見る"
-  puts "1 : お金を入れる"
-  puts "2 : お金を確認する"
-  puts "3 : 飲み物を買う"
-  puts "4 : 終わる"
+  commands.each_with_index do |command,index|
+    puts "#{index} : #{command.get_message}"
+  end
 
   num = gets.chomp.to_i
   puts ""
 
   if commands.length  > num
-    commands[num].call machine
+    commands[num].get_proc.call machine
   else
     puts "存在するものを指定してください"
   end

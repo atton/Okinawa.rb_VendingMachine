@@ -41,13 +41,13 @@ class Vending_machine
     end
   end
 
-  def buy_drink
+  def select_drink
     puts "買いたい飲み物を選んでください"
     @drinks.each_with_index do |item,index|
       puts "[#{index}] : #{item.get_name} : #{item.get_price} "
     end
     num = gets.chomp.to_i
-    buy_calc @drinks[num]
+    buy_drink @drinks[num]
   end
 
   def show_money
@@ -65,7 +65,7 @@ class Vending_machine
 
   private
 
-  def buy_calc drink
+  def buy_drink drink
     if drink == nil
       puts "ちゃんと飲み物を選んでください"
     else
@@ -101,7 +101,6 @@ class Command
     @proc
   end
 end
-require 'pp'
 
 machine = Vending_machine.new
 commands = []
@@ -109,7 +108,7 @@ commands = []
 commands.push Command.new("商品を見る" , Proc.new { |machine| machine.show_drinks })
 commands.push Command.new("お金を入れる" , Proc.new { |machine| machine.add_money })
 commands.push Command.new("お金を確認する",Proc.new { |machine| machine.show_money })
-commands.push Command.new("飲み物を買う",Proc.new { |machine| machine.buy_drink })
+commands.push Command.new("飲み物を買う",Proc.new { |machine| machine.select_drink})
 commands.push Command.new("終わる",Proc.new { exit })
 
 while true 

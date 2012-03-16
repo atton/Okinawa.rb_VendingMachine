@@ -1,4 +1,3 @@
-#!/usr/local/bin/ruby
 # -*- coding: utf-8 -*-
 
 class Item
@@ -111,6 +110,8 @@ class Command
   end
 end
 
+# 上で定義したクラスを元に、それぞれの自販機を定義
+
 class Drink_vending_machine < Vending_machine
   # 飲み物の自動販売機
   
@@ -126,6 +127,24 @@ class Drink_vending_machine < Vending_machine
   end
 end
 
+class Ramen_vending_machine < Vending_machine
+  # ラーメンの自動販売機
+  
+  def initialize
+    items = [
+      Item.new("しお",300),
+      Item.new("しょうゆ",320),
+      Item.new("みそ",320),
+      Item.new("とんこつ",320),
+      Item.new("担々麺",340),
+      Item.new("チャーシュー",350),
+    ]
+    super "ラーメンの自動販売機",items
+  end
+   
+end
+
+# ここまでクラス定義
 
 
 def buy machine
@@ -162,7 +181,8 @@ end
 
 # ここからmain
 machines = [
-  Drink_vending_machine.new
+  Drink_vending_machine.new,
+  Ramen_vending_machine.new
 ]
 
 while true

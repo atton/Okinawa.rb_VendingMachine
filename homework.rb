@@ -7,14 +7,8 @@ class Item
     @name = name
     @price = price
   end
-
-  def get_name
-    @name
-  end
-
-  def get_price
-    @price
-  end
+  
+  attr_reader :name,:price
 end
 
 
@@ -43,7 +37,7 @@ class Vending_machine
   def select_item
     puts "買いたい商品を選んでください"
     @items.each_with_index do |item,index|
-      puts "[#{index}] : #{item.get_name} : #{item.get_price}円"
+      puts "[#{index}] : #{item.name} : #{item.price}円"
     end
     num = gets.chomp.to_i
     buy_item @items[num]
@@ -57,7 +51,7 @@ class Vending_machine
     puts "今販売しているのは"
 
     @items.each do |item|
-      puts "#{item.get_name} : #{item.get_price}円"
+      puts "#{item.name} : #{item.price}円"
     end
     puts "です。"
   end
@@ -78,13 +72,13 @@ class Vending_machine
     if item == nil
       puts "ちゃんと商品を選んでください"
     else
-      puts "#{item.get_name} を買います"
-      if item.get_price > @money
+      puts "#{item.name} を買います"
+      if item.price > @money
         puts "お金が足りません"
         puts "買いませんでした"
       else
-        puts "#{item.get_name} を買いました"
-        @money -= item.get_price
+        puts "#{item.name} を買いました"
+        @money -= item.price
         show_money
       end
     end
@@ -100,14 +94,8 @@ class Command
     @message = mes
     @proc = p
   end
-
-  def get_message
-    @message
-  end
-
-  def get_proc
-    @proc
-  end
+  
+  attr_reader :message,:proc
 end
 
 # 上で定義したクラスを元に、それぞれの自販機を定義
@@ -190,14 +178,14 @@ def buy machine
     puts ""
     puts "何をしますか？"
     commands.each_with_index do |command,index|
-      puts "#{index} : #{command.get_message}"
+      puts "#{index} : #{command.message}"
     end
 
     num = gets.chomp.to_i
     puts ""
 
     if commands.length  > num
-      commands[num].get_proc.call machine
+      commands[num].proc.call machine
     else
       puts "存在するものを指定してください"
     end

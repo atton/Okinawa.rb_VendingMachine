@@ -62,6 +62,16 @@ class Vending_machine
     end
     puts "です。"
   end
+  
+  def get_otsuri
+    if @money == 0
+      puts "お金が入っていません"
+      return
+    end
+    puts "おつりを返却します。"
+    puts "おつりは #{@money} 円です"
+    @money = 0
+  end
 
   private
 
@@ -126,6 +136,7 @@ def buy machine
     Command.new("お金を入れる" , Proc.new { |machine| machine.add_money }),
     Command.new("お金を確認する",Proc.new { |machine| machine.show_money }),
     Command.new("商品を買う",Proc.new { |machine| machine.select_item}),
+    Command.new("おつりを受け取る",Proc.new { |machine| machine.get_otsuri}),
     Command.new("自販機から立ちさる",Proc.new { return })
   ]
 

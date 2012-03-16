@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 
 class Item
+  # 商品クラス
+  # 名前と値段を持つ
   def initialize name,price
     @name = name
     @price = price
@@ -18,6 +20,7 @@ end
 
 
 class Vending_machine
+  # 自動販売機クラス
 
   def initialize items
     @items = items
@@ -78,6 +81,8 @@ class Vending_machine
 end
 
 class Command
+  # コマンドをまとめるクラス
+  # 説明文と実行文(proc)を持っておく
 
   def initialize mes,p
     @message = mes
@@ -94,8 +99,9 @@ class Command
 end
 
 class Drink_vending_machine < Vending_machine
+  # 飲み物の自動販売機
   
-  def initalize
+  def initialize
     items = [ 
       Item.new("レモンティー",110),
       Item.new("ココア",120),
@@ -107,30 +113,39 @@ class Drink_vending_machine < Vending_machine
   end
 end
 
-machine = Drink_vending_machine.new
-commands = []
 
-commands.push Command.new("商品を見る" , Proc.new { |machine| machine.show_items })
-commands.push Command.new("お金を入れる" , Proc.new { |machine| machine.add_money })
-commands.push Command.new("お金を確認する",Proc.new { |machine| machine.show_money })
-commands.push Command.new("飲み物を買う",Proc.new { |machine| machine.select_item})
-commands.push Command.new("終わる",Proc.new { exit })
 
-while true 
+def buy machine
+  # あるマシンに対して処理するメソッド
 
-  puts ""
-  puts "何をしますか？"
-  commands.each_with_index do |command,index|
-    puts "#{index} : #{command.get_message}"
+  commands = [
+    Command.new("商品を見る" , Proc.new { |machine| machine.show_items }),
+    Command.new("お金を入れる" , Proc.new { |machine| machine.add_money }),
+    Command.new("お金を確認する",Proc.new { |machine| machine.show_money }),
+    Command.new("商品を買う",Proc.new { |machine| machine.select_item}),
+    Command.new("終わる",Proc.new { return })
+  ]
+
+  while true 
+
+    puts ""
+    puts "何をしますか？"
+    commands.each_with_index do |command,index|
+      puts "#{index} : #{command.get_message}"
+    end
+
+    num = gets.chomp.to_i
+    puts ""
+
+    if commands.length  > num
+      commands[num].get_proc.call machine
+    else
+      puts "存在するものを指定してください"
+    end
+
   end
-
-  num = gets.chomp.to_i
-  puts ""
-
-  if commands.length  > num
-    commands[num].get_proc.call machine
-  else
-    puts "存在するものを指定してください"
-  end
-
 end
+
+machine = Drink_vending_machine.new
+
+buy machine

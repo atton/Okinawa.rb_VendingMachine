@@ -42,9 +42,9 @@ class Vending_machine
   end
 
   def select_item
-    puts "買いたい飲み物を選んでください"
+    puts "買いたい商品を選んでください"
     @items.each_with_index do |item,index|
-      puts "[#{index}] : #{item.get_name} : #{item.get_price} "
+      puts "[#{index}] : #{item.get_name} : #{item.get_price}円"
     end
     num = gets.chomp.to_i
     buy_item @items[num]
@@ -57,8 +57,8 @@ class Vending_machine
   def show_items 
     puts "今販売しているのは"
 
-    @items.each_with_index do |item,num|
-      puts "#{num} : #{item.get_name} : 値段 #{item.get_price}"
+    @items.each do |item|
+      puts "#{item.get_name} : #{item.get_price}円"
     end
     puts "です。"
   end
@@ -77,7 +77,7 @@ class Vending_machine
 
   def buy_item item
     if item == nil
-      puts "ちゃんと飲み物を選んでください"
+      puts "ちゃんと商品を選んでください"
     else
       puts "#{item.get_name} を買います"
       if item.get_price > @money

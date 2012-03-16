@@ -1,7 +1,7 @@
 #!/usr/local/bin/ruby
 # -*- coding: utf-8 -*-
 
-class Drink
+class Item
   def initialize name,price
     @name = name
     @price = price
@@ -19,19 +19,19 @@ end
 
 class Vending_machine
 
-  def initialize
+  def initialize items
     init_dirnk
     @money = 0
   end
 
   def init_dirnk
-    @drinks = []
-    
-    @drinks.push Drink.new("レモンティー",110)
-    @drinks.push Drink.new("ココア",120)
-    @drinks.push Drink.new("コーヒー",100)
-    @drinks.push Drink.new("お茶",140)
-    @drinks.push Drink.new("コーラ",150)
+    @items = []
+
+    @items.push Item.new("レモンティー",110)
+    @items.push Item.new("ココア",120)
+    @items.push Item.new("コーヒー",100)
+    @items.push Item.new("お茶",140)
+    @items.push Item.new("コーラ",150)
   end
 
   def add_money
@@ -45,23 +45,23 @@ class Vending_machine
     end
   end
 
-  def select_drink
+  def select_item
     puts "買いたい飲み物を選んでください"
-    @drinks.each_with_index do |item,index|
+    @items.each_with_index do |item,index|
       puts "[#{index}] : #{item.get_name} : #{item.get_price} "
     end
     num = gets.chomp.to_i
-    buy_drink @drinks[num]
+    buy_item @items[num]
   end
 
   def show_money
     puts "自動販売機の中には #{@money} 円入っています"
   end
 
-  def show_drinks 
+  def show_items 
     puts "今販売しているのは"
 
-    @drinks.each_with_index do |item,num|
+    @items.each_with_index do |item,num|
       puts "#{num} : #{item.get_name} : 値段 #{item.get_price}"
     end
     puts "です。"
@@ -69,17 +69,17 @@ class Vending_machine
 
   private
 
-  def buy_drink drink
-    if drink == nil
+  def buy_item item
+    if item == nil
       puts "ちゃんと飲み物を選んでください"
     else
-      puts "#{drink.get_name} を買います"
-      if drink.get_price > @money
+      puts "#{item.get_name} を買います"
+      if item.get_price > @money
         puts "お金が足りません"
         puts "買いませんでした"
       else
-        puts "#{drink.get_name} を買いました"
-        @money -= drink.get_price
+        puts "#{item.get_name} を買いました"
+        @money -= item.get_price
         show_money
       end
     end
@@ -106,10 +106,10 @@ end
 machine = Vending_machine.new
 commands = []
 
-commands.push Command.new("商品を見る" , Proc.new { |machine| machine.show_drinks })
+commands.push Command.new("商品を見る" , Proc.new { |machine| machine.show_items })
 commands.push Command.new("お金を入れる" , Proc.new { |machine| machine.add_money })
 commands.push Command.new("お金を確認する",Proc.new { |machine| machine.show_money })
-commands.push Command.new("飲み物を買う",Proc.new { |machine| machine.select_drink})
+commands.push Command.new("飲み物を買う",Proc.new { |machine| machine.select_item})
 commands.push Command.new("終わる",Proc.new { exit })
 
 while true 

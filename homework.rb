@@ -20,18 +20,8 @@ end
 class Vending_machine
 
   def initialize items
-    init_dirnk
+    @items = items
     @money = 0
-  end
-
-  def init_dirnk
-    @items = []
-
-    @items.push Item.new("レモンティー",110)
-    @items.push Item.new("ココア",120)
-    @items.push Item.new("コーヒー",100)
-    @items.push Item.new("お茶",140)
-    @items.push Item.new("コーラ",150)
   end
 
   def add_money
@@ -103,7 +93,21 @@ class Command
   end
 end
 
-machine = Vending_machine.new
+class Drink_vending_machine < Vending_machine
+  
+  def initalize
+    items = [ 
+      Item.new("レモンティー",110),
+      Item.new("ココア",120),
+      Item.new("コーヒー",100),
+      Item.new("お茶",140),
+      Item.new("コーラ",150)
+    ]
+    super items
+  end
+end
+
+machine = Drink_vending_machine.new
 commands = []
 
 commands.push Command.new("商品を見る" , Proc.new { |machine| machine.show_items })

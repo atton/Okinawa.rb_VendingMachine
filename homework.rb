@@ -21,8 +21,11 @@ end
 
 class Vending_machine
   # 自動販売機クラス
+  
+  attr_reader :name
 
-  def initialize items
+  def initialize name,items
+    @name = name
     @items = items
     @money = 0
   end
@@ -109,7 +112,7 @@ class Drink_vending_machine < Vending_machine
       Item.new("お茶",140),
       Item.new("コーラ",150)
     ]
-    super items
+    super "飲み物の自動販売機",items
   end
 end
 
@@ -123,7 +126,7 @@ def buy machine
     Command.new("お金を入れる" , Proc.new { |machine| machine.add_money }),
     Command.new("お金を確認する",Proc.new { |machine| machine.show_money }),
     Command.new("商品を買う",Proc.new { |machine| machine.select_item}),
-    Command.new("終わる",Proc.new { return })
+    Command.new("自販機から立ちさる",Proc.new { return })
   ]
 
   while true 
@@ -146,6 +149,25 @@ def buy machine
   end
 end
 
-machine = Drink_vending_machine.new
+# ここからmain
+machines = [
+  Drink_vending_machine.new
+]
 
-buy machine
+while true
+
+  puts "どの自販機を使いますか？"
+  puts "範囲外を指定すると終わります"
+
+  machines.each_with_index do |machine,index|
+    puts "#{index} : #{machine.name}"
+  end
+
+  num = gets.to_i
+
+  if num >= machines.length
+    exit
+  end
+
+  buy machines[num]
+end

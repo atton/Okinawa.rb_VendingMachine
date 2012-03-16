@@ -144,6 +144,32 @@ class Ramen_vending_machine < Vending_machine
    
 end
 
+class Cigarretes_vending_machine < Vending_machine
+  # タバコの自動販売機
+  
+  def initialize
+    items = [
+      Item.new("タバコA",300),
+      Item.new("タバコB",350),
+      Item.new("タバコC",400),
+    ]
+    super "タバコの自動販売機",items
+  end
+  
+  def select_item
+    puts "ちゃんと20歳以上ですよね？"
+    puts
+    super
+  end
+  
+  def show_items
+    super
+    puts
+    puts "タバコの銘柄が分かんないからこうなったのであって、決して手抜きではありませんよっと"
+  end
+  
+end
+
 # ここまでクラス定義
 
 
@@ -182,7 +208,8 @@ end
 # ここからmain
 machines = [
   Drink_vending_machine.new,
-  Ramen_vending_machine.new
+  Ramen_vending_machine.new,
+  Cigarretes_vending_machine.new
 ]
 
 while true
@@ -191,7 +218,7 @@ while true
   puts "範囲外を指定すると終わります"
 
   machines.each_with_index do |machine,index|
-    puts "#{index} : #{machine.name}"
+    puts "[#{index}] : #{machine.name}"
   end
 
   num = gets.to_i
